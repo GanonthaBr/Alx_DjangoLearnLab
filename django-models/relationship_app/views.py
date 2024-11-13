@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -5,6 +6,7 @@ from django.contrib import messages
 from .models import Book, Library
 from .forms import RegistrationForm
 from django.views.generic.detail import DetailView
+from django.contrib.auth.decorators import login_required, user_passes_test
 
 # Create your views here.
 
@@ -56,3 +58,30 @@ def login(request):
 def logout(request):
     logout(request)
     return redirect(login)
+
+
+#Role checking functions
+
+def is_admin(user):
+    return user.is_authenticated and hasattr(user,'userprofile') and user.userprofile.role == 'Admin'
+def is_member(user):
+    return user.is_authenticated and hasattr(user,'userprofile') and user.userprofile.role == 'Member'
+def is_librarian(user):
+    return user.is_authenticated and hasattr(user,'userprofile') and user.userprofile.role == 'Librarian'
+
+#view controlled access
+
+@login_required
+@user_passes_test(is_admin)
+def admin_view(request):
+    return HttpResponse('This is the admin view')
+
+@login_required
+@user_passes_test(is_member)
+def admin_view(request):
+    return HttpResponse('This is the member view')
+
+@login_required
+@user_passes_test(is_librarian)
+def admin_view(request):
+    return HttpResponse('This is the librarian view')
