@@ -1,12 +1,12 @@
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpResponseForbidden
+from django.shortcuts import render, redirect, get_list_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from .models import Book, Library
 from .forms import RegistrationForm
 from django.views.generic.detail import DetailView
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
 
 # Create your views here.
 
@@ -15,6 +15,30 @@ def books(request):
     book_list = Book.objects.all()
     data = {"books":book_list}
     return render(request,'list_books.html',data)
+
+@permission_required('relationship_app.can_add_book',raise_exception=True)
+def add_book_view(request):
+    if request.method == 'POST':
+        return HttpResponse('Added new book')
+    
+
+@permission_required('relationship_app.can_change_book',raise_exception=True)
+def update_book_view(request,pk):
+    book = get_list_or_404(Book,pk=pk)
+    if request.method == 'PUT':
+        return HttpResponse('Updated book')
+    
+    
+@permission_required('relationship_app.can_delete_book',raise_exception=True)
+def delete_book_view(request,pk):
+    if request.method == 'DELETE':
+        book = get_list_or_404(Book,pk=pk)
+        book.delte()
+        return HttpResponse('Book deleted!')
+
+
+
+
 
 class LibrairyDetails(DetailView):
     model = Library
