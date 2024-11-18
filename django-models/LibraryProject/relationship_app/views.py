@@ -9,6 +9,7 @@ from .models import Book
 from .forms import RegistrationForm
 from django.views.generic.detail import DetailView
 from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
+from django.views import View
 
 # Create your views here.
 
@@ -63,27 +64,32 @@ def register(request):
 
 #login
 
-def login(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(request,data=request.POST)
+class LoginView(View):
+    form_class = AuthenticationForm
+    template_name = 'relationship_app/login.html'
+
+    def get(self, request):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = self.form_class(request, data=request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
-            user = authenticate(request,username=username,password=password)
+            user = authenticate(request, username=username, password=password)
             if user is not None:
-                login(request,user)
+                login(request, user)
                 return redirect('book-list')
             else:
-                messages.error(request,'Invalid username or password!')
-    else:
-        form = AuthenticationForm()
-        return render('request','relationship_app/login.html',{'form':form})
-    
+                messages.error(request, 'Invalid username or password!')
+        return render(request, self.template_name, {'form': form})
 
 #logout
-def logout(request):
-    logout(request)
-    return redirect(login)
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        return redirect('login')
 
 
 #Role checking functions
