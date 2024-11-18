@@ -42,7 +42,7 @@ def delete_book_view(request,pk):
 
 class LibrairyDetails(DetailView):
     model = Library
-    template_name = 'library_details.html'
+    template_name = 'relationship_app/library_details.html'
     context_object_name = 'library'
 
 
@@ -56,7 +56,7 @@ def register(request):
             return redirect('book-list')
     else:
         form = RegistrationForm()
-        return render(request,'register.html',{'form':form})
+        return render(request,'relationship_app/register.html',{'form':form})
     
 
 #login
@@ -75,7 +75,7 @@ def login(request):
                 messages.error(request,'Invalid username or password!')
     else:
         form = AuthenticationForm()
-        return render('request','login.html',{'form':form})
+        return render('request','relationship_app/login.html',{'form':form})
     
 
 #logout
