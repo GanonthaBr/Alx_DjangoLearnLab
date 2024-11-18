@@ -3,7 +3,8 @@ from django.shortcuts import render, redirect, get_list_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
-from .models import Book, Library
+from .models import Library
+from .models import Book
 from .forms import RegistrationForm
 from django.views.generic.detail import DetailView
 from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
