@@ -1,10 +1,10 @@
 from django.http import HttpResponse, HttpResponseForbidden
-from django.shortcuts import render, redirect, get_list_or_404
+from django.shortcuts import get_object_or_404, render, redirect, get_list_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib import messages
 from .models import Library
-from .models import Book
+from .models import Book, User
 from .forms import RegistrationForm
 from django.views.generic.detail import DetailView
 from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
@@ -110,3 +110,16 @@ def admin_view(request):
 @user_passes_test(is_librarian)
 def admin_view(request):
     return HttpResponse('This is the librarian view')
+
+
+#user permission
+@permission_required('your_app_name.can_view', raise_exception=True)
+def user_list(request):
+    users = User.objects.all()
+    return render(request, 'user_list.html', {'users': users})
+
+@permission_required('your_app_name.can_edit', raise_exception=True)
+def edit_user(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    # Handle edit logic here
+    return render(request, 'edit_user.html', {'user': user})

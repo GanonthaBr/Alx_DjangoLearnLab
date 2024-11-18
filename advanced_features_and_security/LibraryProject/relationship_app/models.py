@@ -26,6 +26,15 @@ class User(AbstractUser):
     data_of_birth = models.DateField()
     objects = CustomUserManager()
 
+    class Meta:
+        permissions = [
+            ("can_view", "Can view user"),
+            ("can_create", "Can create user"),
+            ("can_edit", "Can edit user"),
+            ("can_delete", "Can delete user"),
+        ]
+    
+
     def __str__(self):
         return self.email
 
