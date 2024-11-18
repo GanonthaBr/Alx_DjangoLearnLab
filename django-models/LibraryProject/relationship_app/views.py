@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test, per
 # Create your views here.
 
 #all books
-def books(request):
+def list_books(request):
     book_list = Book.objects.all()
     data = {"books":book_list}
     return render(request,'relationship_app/list_books.html',data)
@@ -41,7 +41,7 @@ def delete_book_view(request,pk):
 
 
 
-class LibrairyDetails(DetailView):
+class LibraryDetailView(DetailView):
     model = Library
     template_name = 'relationship_app/library_detail.html'
     context_object_name = 'library'
