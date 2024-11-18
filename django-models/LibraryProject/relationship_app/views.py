@@ -1,9 +1,10 @@
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect, get_list_or_404
 from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib import messages
-from .models import Book, Library
+from .models import Library
+from .models import Book
 from .forms import RegistrationForm
 from django.views.generic.detail import DetailView
 from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
@@ -42,7 +43,7 @@ def delete_book_view(request,pk):
 
 class LibrairyDetails(DetailView):
     model = Library
-    template_name = 'library_details.html'
+    template_name = 'relationship_app/library_detail.html'
     context_object_name = 'library'
 
 
@@ -56,7 +57,7 @@ def register(request):
             return redirect('book-list')
     else:
         form = RegistrationForm()
-        return render(request,'register.html',{'form':form})
+        return render(request,'relationship_app/register.html',{'form':form})
     
 
 #login
@@ -75,7 +76,7 @@ def login(request):
                 messages.error(request,'Invalid username or password!')
     else:
         form = AuthenticationForm()
-        return render('request','login.html',{'form':form})
+        return render('request','relationship_app/login.html',{'form':form})
     
 
 #logout
