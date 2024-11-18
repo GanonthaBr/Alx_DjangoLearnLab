@@ -9,6 +9,7 @@ from .models import Book
 from .forms import RegistrationForm
 from django.views.generic.detail import DetailView
 from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
+from django.contrib.auth.decorators import permission_required
 from django.views import View
 
 # Create your views here.
