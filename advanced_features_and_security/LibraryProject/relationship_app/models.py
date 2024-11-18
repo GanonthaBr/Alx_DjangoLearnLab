@@ -1,8 +1,13 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 # Create your models here.
+
+class User(AbstractUser):
+    profile_photo = models.ImageField()
+    data_of_birth = models.DateField()
+
 
 class Author(models.Model):
     name = models.CharField(max_length=100)
