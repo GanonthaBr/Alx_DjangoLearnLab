@@ -42,7 +42,7 @@ def delete_book_view(request,pk):
 
 class LibrairyDetails(DetailView):
     model = Library
-    template_name = 'relationship_app/library_details.html'
+    template_name = 'relationship_app/library_detail.html'
     context_object_name = 'library'
 
 
