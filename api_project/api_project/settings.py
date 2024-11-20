@@ -135,6 +135,9 @@ REST_FRAMEWORK = {
             'rest_framework_simplejwt.authentication.JWTAuthentication',
 
         ),
+        'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
         'DEFAULT_THROTTLE_RATES':{
             'anon':'200/day', #anonymous users
             'user':'100/day', #authenticated users
