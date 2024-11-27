@@ -139,6 +139,11 @@ REST_FRAMEWORK = {
         'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
+    'DEFAULT_FILTER_BACKENDS':[         #filter, search, ordering
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+    ],
         'DEFAULT_THROTTLE_RATES':{
             'anon':'200/day', #anonymous users
             'user':'100/day', #authenticated users
