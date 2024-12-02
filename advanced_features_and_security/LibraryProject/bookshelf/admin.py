@@ -1,11 +1,11 @@
 from django.contrib import admin
-from .models import Book, CustomUser, Author
+from .models import Book, CustomUser, Author, CustomUserAdmin
 
 
 # Register your models here.
 
 admin.site.register(Book)
-admin.site.register(CustomUser)
+admin.site.register(CustomUser, CustomUserAdmin)
 
 class BookAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'publication_year')
