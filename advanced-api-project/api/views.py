@@ -22,7 +22,7 @@ class BookListView(generics.ListAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     #adding filter backends for search, filter and ordering
-    filter_backends = [rest_framework.DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filter_backends = [rest_framework.DjangoFilterBackend, SearchFilter, filter.OrderingFilter]
 
     # search fields
     search_fields = ['title','author']
