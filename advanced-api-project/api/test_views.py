@@ -13,6 +13,7 @@ class TestBookAPI(APITestCase):
         self.token = Token.objects.create(user=self.user)
         self.client = APIClient()
         print(self.token.key)
+        self.client.login(username='TestUser',password='passwordTest')
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)            #Login
 
         
@@ -57,9 +58,12 @@ class TestBookAPI(APITestCase):
         self.assertEqual(response.status_code,status.HTTP_200_OK)
         self.assertEqual(response.data['title'],self.book.title)
 
+
         #Delete a Book
     # def test_delete_book(self):
     #     url = reverse('book-delete')
     #     response = self.client.delete(url)
+
+    
 
 
