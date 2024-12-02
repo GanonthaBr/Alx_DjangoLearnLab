@@ -4,7 +4,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib import messages
 from .models import Library
-from .models import Book, User
+from .models import Book,CustomUser
 from .forms import ExampleForm
 from .forms import RegistrationForm
 from django.views.generic.detail import DetailView
@@ -117,11 +117,11 @@ def admin_view(request):
 #user permission
 @permission_required('your_app_name.can_view', raise_exception=True)
 def user_list(request):
-    users = User.objects.all()
+    users = CustomUser.objects.all()
     return render(request, 'user_list.html', {'users': users})
 
 @permission_required('your_app_name.can_edit', raise_exception=True)
 def edit_user(request, user_id):
-    user = get_object_or_404(User, id=user_id)
+    user = get_object_or_404(CustomUser, id=user_id)
     # Handle edit logic here
     return render(request, 'edit_user.html', {'user': user})
