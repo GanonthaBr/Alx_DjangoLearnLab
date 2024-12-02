@@ -11,7 +11,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticate
     update settings.py for filters and ordering
 '''
 from rest_framework.filters import SearchFilter, OrderingFilter
-# from django_filters.rest_framework import DjangoFilterBackend
+from django_filters.rest_framework import DjangoFilterBackend
 
 # Create your views here.
 
@@ -22,19 +22,19 @@ class BookListView(generics.ListAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     #adding filter backends for search, filter and ordering
-    # filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
 
-    #search fields
-    # search_fields = ['title','author']
+    # search fields
+    search_fields = ['title','author']
 
-    #filterset fields
-    # filterset_fields = ['publication_year','author']
+    # filterset fields
+    filterset_fields = ['publication_year','author']
 
-    #ordering fields
-    # ordering_fields = ['title','publication_year']
+    # ordering fields
+    ordering_fields = ['title','publication_year']
 
 #Retrieve a single Book by Id
-class BookDetailsView(generics.RetrieveAPIView):
+class BookDetailsView(generics.DetailView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
