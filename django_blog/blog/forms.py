@@ -19,9 +19,25 @@ class CustomUserCreationForm(UserCreationForm):
         
 #Profile management 
 class ProfileForm(forms.ModelForm):
+
     class Meta:
         model = CustomUser
         fields = ['email','bio']
 class PostForm(forms.ModelForm):
-    model = Post
-    fields = "__all__"
+    class Meta:
+        model = Post
+        fields = ['title','content']
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user','None')
+        super().__init__(*args,**kwargs)
+
+    def save(self,commit=True):
+        post = super().save(commit=False)
+        if self.user:
+            post.author = self.user
+        if commit:
+            post.save()
+        return post
+
+    

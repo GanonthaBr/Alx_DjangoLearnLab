@@ -1,0 +1,10 @@
+{% extends 'blog/base.html' %} {% load static %} {% block content %}
+
+<h2>{{post.title}}</h2>
+<p>{{post.content}}</p>
+
+<small>Added by: {{post.author}} in {{post.published_date}} </small>
+
+<a href="{% url 'post-delete' post.pk %}">Remove</a>
+
+{% endblock content %}

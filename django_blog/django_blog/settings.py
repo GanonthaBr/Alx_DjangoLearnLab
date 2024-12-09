@@ -47,6 +47,9 @@ AUTH_USER_MODEL = 'blog.CustomUser'
 #Media Files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+
+#login
+LOGIN_URL = '/login/'
 # Application definition
 
 INSTALLED_APPS = [

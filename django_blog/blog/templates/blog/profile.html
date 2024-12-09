@@ -4,7 +4,10 @@
   {% csrf_token %} {{form.as_p}}
   <button type="button">Update Profile</button>
 </form>
-
+<form method="post" action="{% url 'logout' %}">
+  {% csrf_token %}
+  <button type="submit">logout</button>
+</form>
 {% if user.profile_pic %}
 <h3>Your Profile Pic</h3>
 <img src="{{user.profile_pic.url}}" alt="profile Picture" width="150" />
