@@ -79,6 +79,7 @@ class PostCreateView(LoginRequiredMixin,CreateView):
     login_url = '/login/'
     redirect_field_name = 'next'
 
+    #ensure only author can perform task
     def test_func(self):
         post = self.get_object()
         return self.request.user == post.author
@@ -102,7 +103,6 @@ class PostDeleteView(DeleteView, UserPassesTestMixin, LoginRequiredMixin):
     template_name = 'blog/post_confirm_delete.html'
 
     #ensure only author can perform task
-
     def test_func(self):
         post = self.get_object()
         return self.request.user == post.author
@@ -118,6 +118,7 @@ class CommentUpdateView(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     def get_success_url(self):
         return reverse_lazy('post-detail',kwargs={'pk':self.object.post.pk})
     
+    #ensure only author can perform task
     def test_func(self):
         return self.request.user == self.get_object().author
     
@@ -128,5 +129,6 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def get_success_url(self):
         return reverse_lazy('post-detail',kwargs={'pk':self.object.post.pk})
     
+    #ensure only author can perform task
     def test_func(self):
         return self.request.user == self.get_object().author
