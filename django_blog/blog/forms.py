@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post, CustomUser
+from .models import Post, CustomUser, Comment
 from django.contrib.auth.forms import UserCreationForm
 
 
@@ -40,4 +40,8 @@ class PostForm(forms.ModelForm):
             post.save()
         return post
 
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
     

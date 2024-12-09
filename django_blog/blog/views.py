@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from .models import Post
-from .forms import CustomUserCreationForm, PostForm, ProfileForm
+from .models import Post, Comment
+from .forms import CommentForm, CustomUserCreationForm, PostForm, ProfileForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.views.generic.list import ListView
@@ -54,6 +54,23 @@ class PostDetailView(DetailView):
     template_name = 'blog/post_detail.html'
     context_object_name = 'post'
 
+    #comment feature
+    def get_context_data(self, **kwargs):
+        context=  super().get_context_data(**kwargs)
+        context['comments'] = self.object.comments.all()
+        context['form'] = CommentForm()
+        return context
+    def post(self,request,*args,**kwargs):
+        self.object = self.get_object()
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = self.object
+            comment.author = request.user
+            comment.save()
+            return redirect('post-detail',pk=self.object.pk)
+        return self.get(request,*args,**kwargs)
+
 class PostCreateView(LoginRequiredMixin,CreateView):
     model = Post
     form_class = PostForm
@@ -91,4 +108,25 @@ class PostDeleteView(DeleteView, UserPassesTestMixin, LoginRequiredMixin):
         return self.request.user == post.author
 
 
+#Commenting
+
+class CommentUpdateView(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
+    model = Comment
+    fields = ['content']
+    template_name = 'blog/comment_form.html'
+
+    def get_success_url(self):
+        return reverse_lazy('post-detail',kwargs={'pk':self.object.post.pk})
     
+    def test_func(self):
+        return self.request.user == self.get_object().author
+    
+class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Comment
+    template_name = 'blog/comment_confirm_delete.html'
+
+    def get_success_url(self):
+        return reverse_lazy('post-detail',kwargs={'pk':self.object.post.pk})
+    
+    def test_func(self):
+        return self.request.user == self.get_object().author
