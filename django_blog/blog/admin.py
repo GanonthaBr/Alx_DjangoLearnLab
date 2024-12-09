@@ -3,5 +3,5 @@ from .models import *
 # Register your models here.
 admin.site.register(Post)
 admin.site.register(Comment)
-#testing git ignore
+#testing git ignore commits
 
