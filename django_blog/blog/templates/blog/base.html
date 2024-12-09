@@ -1,14 +1,63 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0"
       charset="UTF-8"
     />
-    {% load static %}
+    <!-- Include your CSS files here -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
     <title>{% block title %}Django Blog{% endblock %}</title>
+
+    <style>
+      /* Basic reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        color: #333;
+      }
+
+      header {
+        background-color: #333;
+        padding: 10px;
+        text-align: center;
+      }
+
+      header nav ul {
+        list-style-type: none;
+      }
+
+      header nav ul li {
+        display: inline;
+        margin: 0 15px;
+      }
+
+      header nav ul li a {
+        color: white;
+        text-decoration: none;
+        font-size: 18px;
+      }
+
+      .content {
+        margin: 20px;
+      }
+
+      footer {
+        text-align: center;
+        margin-top: 50px;
+        padding: 10px;
+        background-color: #333;
+        color: white;
+      }
+    </style>
   </head>
   <body>
     <header>
@@ -16,7 +65,7 @@
         <ul>
           <li><a href="{% url 'home' %}">Home</a></li>
           <li><a href="{% url 'posts' %}">Blog Posts</a></li>
-          <li><a href="{% url 'login' %}">Login</a></li>
+          <li><a href="{% url 'profile' %}">Profile</a></li>
           <li><a href="{% url 'register' %}">Register</a></li>
         </ul>
       </nav>
