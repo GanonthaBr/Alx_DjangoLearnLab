@@ -50,6 +50,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 #login
 LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
 # Application definition
 
 INSTALLED_APPS = [
