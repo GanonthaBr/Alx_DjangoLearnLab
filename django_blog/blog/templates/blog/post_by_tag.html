@@ -1,0 +1,6 @@
+{% extends 'blog/base.html' %} {% block content %}
+<h1>Posts tagged with "{{ view.kwargs.tag_slug }}"</h1>
+{% for post in posts %}
+<h2>{{ post.title }}</h2>
+<p>{{ post.content }}</p>
+{% endfor %} {% endblock content %}

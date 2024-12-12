@@ -1,0 +1,6 @@
+{% extends 'blog/base.html' %} {% block content %}
+<h1>Search Results</h1>
+{% for post in results %}
+<h2>{{ post.title }}</h2>
+<p>{{ post.content }}</p>
+{% endfor %} {% endblock content %}

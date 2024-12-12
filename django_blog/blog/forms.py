@@ -26,7 +26,7 @@ class ProfileForm(forms.ModelForm):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title','content']
+        fields = ['title','content','tags']
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user','None')

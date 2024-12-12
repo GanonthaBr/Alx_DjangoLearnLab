@@ -8,7 +8,7 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-
+from django.db.models import Q
 
 # Create your views here.
 
@@ -146,3 +146,19 @@ class CommentCreateView(LoginRequiredMixin,CreateView):
 
     def get_success_url(self):
         return reverse_lazy('post-detail',kwargs={'pk':self.kwargs['pk']})
+    
+
+    #search
+def search(request):
+    query = request.GET.get('q')
+    posts = Post.objects.filter(Q(title__icontains=query) | Q(content__icontains=query)).distinct()
+    return render(request,'blog/search_results.html',{'posts':posts})
+
+#tagging
+class PostByTagView(ListView):
+    model = Post
+    template_name = 'blog/post_by_tag.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        return Post.objects.filter(tags__slug=self.kwargs['tag_slug'])
