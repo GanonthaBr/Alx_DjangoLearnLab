@@ -155,7 +155,7 @@ def search(request):
     return render(request,'blog/search_results.html',{'posts':posts})
 
 #tagging
-class PostByTagView(ListView):
+class PostByTagListView(ListView):
     model = Post
     template_name = 'blog/post_by_tag.html'
     context_object_name = 'posts'
