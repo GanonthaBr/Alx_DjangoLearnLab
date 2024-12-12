@@ -132,3 +132,17 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     #ensure only author can perform task
     def test_func(self):
         return self.request.user == self.get_object().author
+    
+
+class CommentCreateView(LoginRequiredMixin,CreateView):
+    model = Comment
+    fields = ['content']
+    template_name = 'blog/comment_form.html'
+
+    def form_valid(self,form):
+        form.instance.author = self.request.user
+        form.instance.post = Post.objects.get(pk=self.kwargs['pk'])
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('post-detail',kwargs={'pk':self.kwargs['pk']})
