@@ -151,7 +151,7 @@ class CommentCreateView(LoginRequiredMixin,CreateView):
     #search
 def search(request):
     query = request.GET.get('q')
-    posts = Post.objects.filter(Q(title__icontains=query) | Q(content__icontains=query)).distinct()
+    posts = Post.objects.filter(Q(title__icontains=query) | Q(tags__name__icontains=query) | Q(content__icontains=query)).distinct()
     return render(request,'blog/search_results.html',{'posts':posts})
 
 #tagging
