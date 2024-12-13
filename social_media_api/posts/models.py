@@ -1,6 +1,6 @@
 from django.db import models
 
-from social_media_api.accounts.models import CustomUser
+from accounts.models import CustomUser
 
 # Create your models here.
 class Post(models.Model):
