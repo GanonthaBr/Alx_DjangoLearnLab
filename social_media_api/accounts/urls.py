@@ -2,7 +2,7 @@ from django.urls import path
 from .views import RegisterView
 from .views import LoginView
 from .views import ProfileView
-from .views import FollowView, FeedView
+from .views import FollowView, FeedView, LikeView
 
 
 urlpatterns = [
@@ -13,4 +13,6 @@ urlpatterns = [
     path('follow/<int:pk>/',FollowView.as_view(),name='follow'),
     path('unfollow/<int:pk>/',FollowView.as_view(),name='unfollow'),
     path('feed/',FeedView.as_view(),name='feed'),
+    path('posts/<int:pk>/like/',LikeView.as_view(),name='like'),
+    path('posts/<int:pk>/unlike/',LikeView.as_view(),name='unlike'),
 ]

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
+
 # Custom user
 class CustomUser(AbstractUser):
     bio = models.TextField(blank=True, null=True)
@@ -23,5 +24,5 @@ class CustomUser(AbstractUser):
         verbose_name='user permissions',
     )
 
-class Follow(models.Model):
-    followers = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+
+
