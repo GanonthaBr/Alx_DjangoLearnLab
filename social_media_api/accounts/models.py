@@ -6,6 +6,7 @@ class CustomUser(AbstractUser):
     bio = models.TextField(blank=True, null=True)
     profile_picture = models.ImageField(upload_to='profile_pics/',null=True,blank=True)
     followers = models.ManyToManyField('self',symmetrical=False)
+    following = models.ManyToManyField('self')
 
     groups = models.ManyToManyField(
         'auth.Group',
@@ -21,3 +22,6 @@ class CustomUser(AbstractUser):
         help_text='Specific permissions for this user.',
         verbose_name='user permissions',
     )
+
+class Follow(models.Model):
+    followers = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
