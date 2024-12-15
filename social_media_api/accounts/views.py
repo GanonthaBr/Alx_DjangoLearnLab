@@ -51,24 +51,27 @@ class ProfileView(generics.RetrieveUpdateAPIView):
 class FollowView(APIView):
     def post(self,request,pk):
         user_to_follow = CustomUser.objects.get(pk=pk)
-       
         if user_to_follow != request.user:
-            print(user_to_follow.followers.all())
-            follow, created = user_to_follow.followers.add(request.user)
-            if created:
-                return Response({"message":"Followed"}, status=status.HTTP_201_CREATED)
+            if request.user in user_to_follow.user_followers.all():
+                user_to_follow.user_followers.remove(request.user)
+                print(user_to_follow.user_followers.all())
+                return Response({"message": "Unfollowed"}, status=status.HTTP_200_OK)
             else:
-                user_to_follow.followers.remove(request.user)
-                return Response({"message":"Unfollowed"}, status=status.HTTP_200_OK)
+                user_to_follow.user_followers.add(request.user)
+                return Response({"message": "Followed"}, status=status.HTTP_201_CREATED)
         return Response({"message":"Cannot follow yourself"}, status=status.HTTP_400_BAD_REQUEST)
 
 #Personalized Feed
 class FeedView(APIView):
-    def get(self,request):
-        following_users = request.user.following.values_list('following',flat=True)
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        following_users = request.user.user_following.all().values_list('id', flat=True)
+        print(following_users)
+        if not following_users:
+            return Response({"message": "No posts available"}, status=status.HTTP_200_OK)
         posts = Post.objects.filter(author__in=following_users).order_by('-created_at')
-        serialized_data = PostSerializer(posts,many=True)
-        return Response(serialized_data.data)
+        serialized_data = PostSerializer(posts, many=True)
+        return Response(serialized_data.data, status=status.HTTP_200_OK)
     
 
 #Like
@@ -79,4 +82,6 @@ class LikeView(APIView):
         if created:
             return Response({"message":"Post  Liked"},status=status.HTTP_201_CREATED)
         else:
+            like = Like.objects.filter(user=request.user, post=post)
+            like.delete()    
             return Response({"message":"Post unliked"}, status=status.HTTP_200_OK)
