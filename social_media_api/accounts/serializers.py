@@ -6,9 +6,9 @@ from django.contrib.auth import authenticate
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ('id','username','email', 'bio','profile_picture')
+        fields = ('id','username','email', 'followers','bio','profile_picture','following')
         read_only_fields = [
-            'id'
+            'id','followers','following'
         ]
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
