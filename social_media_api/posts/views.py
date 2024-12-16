@@ -37,7 +37,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         content = request.data.get('content')
     #create comment
         comment = Comment.objects.create(
-            user = request.user,
+            author = self.request.user,
             post=post,
             content=content
         )

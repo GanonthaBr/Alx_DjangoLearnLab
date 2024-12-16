@@ -9,7 +9,7 @@ from accounts.models import CustomUser
 def create_comment_notification(sender, instance, created, **kwargs):
     if created:
         Notification.objects.create(recipient=instance.post.author,
-                                    actor = instance.user,
+                                    actor = instance.author,
                                     verb = 'added a comment on your post',
                                     target = instance
                                     )

@@ -55,13 +55,10 @@ class FollowView(APIView):
             if request.user in user_to_follow.user_followers.all():
                 user_to_follow.user_followers.remove(request.user)
                 request.user.user_following.remove(user_to_follow)
-                # print(user_to_follow.user_followers.all())
                 return Response({"message": "Unfollowed"}, status=status.HTTP_200_OK)
             else:
                 user_to_follow.user_followers.add(request.user)
-                # print(user_to_follow.user_followers.all())
                 request.user.user_following.add(user_to_follow)
-                # print(request.user.user_following.all())
                 return Response({"message": "Followed"}, status=status.HTTP_201_CREATED)
         return Response({"message":"Cannot follow yourself"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -70,7 +67,6 @@ class FeedView(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request):
         following_users = request.user.following.all().values_list('id', flat=True)
-        print(following_users)
         if not following_users:
             return Response({"message": "No posts available"}, status=status.HTTP_200_OK)
         posts = Post.objects.filter(author__in=following_users).order_by('-created_at')
