@@ -8,7 +8,7 @@ from rest_framework import permissions
 from .serializers import UserSerializer, LoginSerializer,RegisterSerializer
 from .models  import CustomUser
 from rest_framework.views import APIView
-from posts.models import Post, Like
+
 
 
 
@@ -63,15 +63,3 @@ class FollowView(APIView):
                 request.user.user_following.add(user_to_follow)
                 return Response({"message": "Followed"}, status=status.HTTP_201_CREATED)
         return Response({"message":"Cannot follow yourself"}, status=status.HTTP_400_BAD_REQUEST)
-
-#Like
-class LikeView(APIView):
-    def post(self,request,pk):
-        post = Post.objects.get(pk=pk)
-        like, created = Like.objects.get_or_create(user=request.user,post=post)
-        if created:
-            return Response({"message":"Post  Liked"},status=status.HTTP_201_CREATED)
-        else:
-            like = Like.objects.filter(user=request.user, post=post)
-            like.delete()    
-            return Response({"message":"Post unliked"}, status=status.HTTP_200_OK)
