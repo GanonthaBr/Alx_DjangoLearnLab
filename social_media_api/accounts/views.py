@@ -2,14 +2,14 @@ from rest_framework import viewsets, generics, status
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny
 from rest_framework import permissions
 
 from .serializers import UserSerializer, LoginSerializer,RegisterSerializer
 from .models  import CustomUser
 from rest_framework.views import APIView
 from posts.models import Post, Like
-from posts.serializers import PostSerializer
+
 
 
 class RegisterView(generics.CreateAPIView):
@@ -63,18 +63,6 @@ class FollowView(APIView):
                 request.user.user_following.add(user_to_follow)
                 return Response({"message": "Followed"}, status=status.HTTP_201_CREATED)
         return Response({"message":"Cannot follow yourself"}, status=status.HTTP_400_BAD_REQUEST)
-
-#Personalized Feed
-class FeedView(APIView):
-    permission_classes = [IsAuthenticated]
-    def get(self, request):
-        following_users = request.user.following.all().values_list('id', flat=True)
-        if not following_users:
-            return Response({"message": "No posts available"}, status=status.HTTP_200_OK)
-        posts = Post.objects.filter(author__in=following_users).order_by('-created_at')
-        serialized_data = PostSerializer(posts, many=True)
-        return Response(serialized_data.data, status=status.HTTP_200_OK)
-    
 
 #Like
 class LikeView(APIView):
