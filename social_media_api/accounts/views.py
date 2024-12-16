@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework import permissions
 
 from .serializers import UserSerializer, LoginSerializer,RegisterSerializer
 from .models  import CustomUser
@@ -28,8 +29,8 @@ class LoginView(ObtainAuthToken):
         return Response({'token': token.key})
 
 #profile view for profile management with CustomUser
-class ProfileView(generics.RetrieveUpdateAPIView):
-    permission_classes  = [IsAuthenticated]
+class ProfileView(generics.GenericAPIView):
+    permission_classes  = [permissions.IsAuthenticated]
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
 
