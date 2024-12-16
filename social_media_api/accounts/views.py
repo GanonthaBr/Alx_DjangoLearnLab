@@ -18,12 +18,13 @@ class RegisterView(generics.CreateAPIView):
 
 class LoginView(ObtainAuthToken):
     serializer_class = LoginSerializer
+    # get_user_model().objects.create_user
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data
-        token, created = Token.objects.get_or_create(user=user)
+        token, created = Token.objects.create(user=user)
         return Response({'token': token.key})
 
 #profile view for profile management with CustomUser
