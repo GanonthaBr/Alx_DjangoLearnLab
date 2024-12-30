@@ -5,6 +5,15 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 # Create your models here.
 class CustomUserManager(BaseUserManager):
+    def create_user(self, email, password, **extra_fields):
+        if not email:
+            raise ValueError('The Email field must be set')
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+class CustomUserAdmin(BaseUserManager):
     def create_user(self, email, date_of_birth, profile_photo, password=None, **extra_fields):
         if not email:
             raise ValueError('The Email field must be set')
@@ -23,7 +32,7 @@ class CustomUserManager(BaseUserManager):
 class CustomUser(AbstractUser):
     profile_photo = models.ImageField(upload_to='profile_photo/')
     data_of_birth = models.DateField()
-    objects = CustomUserManager()
+    objects = CustomUserAdmin()
 
     class Meta:
         permissions = [
