@@ -107,10 +107,13 @@ def is_librarian(user):
 
 # View controlled access
 
-@user_passes_test(is_admin)
-def admin_view(request):
-    return render(request, 'relationship_app/admin_view.html',
-    {'message' : "Welcome to Admin Dashboard"})
+def admin_test(user):
+    return is_admin(user)
+
+@user_passes_test(admin_test)
+def admin_view(request, *args, **kwargs):
+      #your view logic
+       return render(*args, **kwargs)
 # @login_required
 # @user_passes_test(is_admin)
 # def admin_view(request):
