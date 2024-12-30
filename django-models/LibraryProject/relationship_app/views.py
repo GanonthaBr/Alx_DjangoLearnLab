@@ -97,7 +97,7 @@ class LogoutView(View):
 # Role checking functions
 
 def is_admin(user):
-    return user.is_authenticated and hasattr(user, 'userprofile') and user.userprofile.role == 'Admin'
+    return hasattr(user, 'userprofile') and user.userprofile.role == 'Admin'
 
 def is_member(user):
     return user.is_authenticated and hasattr(user, 'userprofile') and user.userprofile.role == 'Member'
@@ -107,10 +107,14 @@ def is_librarian(user):
 
 # View controlled access
 
-@login_required
 @user_passes_test(is_admin)
 def admin_view(request):
-    return HttpResponse('This is the admin view')
+    return render(request, 'relationship_app/admin_view.html',
+    {'message' : "Welcome to Admin Dashboard"})
+# @login_required
+# @user_passes_test(is_admin)
+# def admin_view(request):
+#     return HttpResponse('This is the admin view')
 
 @login_required
 @user_passes_test(is_member)
