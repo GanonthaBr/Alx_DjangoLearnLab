@@ -56,6 +56,7 @@ def register(request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
+            UserCreationForm.save()
             login(request,user) #log th user in after registration
             return redirect('book-list')
     else:
