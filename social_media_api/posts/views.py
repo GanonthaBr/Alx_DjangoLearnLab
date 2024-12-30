@@ -7,6 +7,7 @@ from .pagination import PostPagination, CommentPagination
 from rest_framework.filters import SearchFilter
 from rest_framework.views import APIView
 from rest_framework import generics
+from notifications.models import Notification
 
 
 #Post
@@ -65,9 +66,15 @@ class LikeView(APIView):
         post = generics.get_object_or_404(Post,pk=pk)
         like, created = Like.objects.get_or_create(user=request.user,post=post)
         if created:
-            # Notification.objects.create
             return Response({"message":"Post  Liked"},status=status.HTTP_201_CREATED)
         else:
+            user_recipient = post.author
+            Notification.objects.create(
+                                    recipient=user_recipient,
+                                    actor = request.user,
+                                    verb = 'Unliked your post',
+                                    target = post
+                                    )
             like = Like.objects.filter(user=request.user, post=post)
             like.delete()    
             return Response({"message":"Post unliked"}, status=status.HTTP_200_OK)
