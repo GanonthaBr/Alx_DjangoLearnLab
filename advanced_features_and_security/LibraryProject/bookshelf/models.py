@@ -4,8 +4,7 @@ from django.contrib.auth.models import User, AbstractUser, BaseUserManager
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 # Create your models here.
-
-class CustomUserAdmin(BaseUserManager):
+class CustomUserManager(BaseUserManager):
     def create_user(self, email, date_of_birth, profile_photo, password=None, **extra_fields):
         if not email:
             raise ValueError('The Email field must be set')
@@ -24,7 +23,7 @@ class CustomUserAdmin(BaseUserManager):
 class CustomUser(AbstractUser):
     profile_photo = models.ImageField(upload_to='profile_photo/')
     data_of_birth = models.DateField()
-    objects = CustomUserAdmin()
+    objects = CustomUserManager()
 
     class Meta:
         permissions = [
